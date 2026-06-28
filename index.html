@@ -34,6 +34,9 @@
         .modal-box {
             max-width: 600px;
             text-align: center;
+            /* 关键：提高弹窗层级，防止被遮罩挡住点击 */
+            position: relative;
+            z-index: 10000;
         }
         .text-item {
             margin: 16px 0;
@@ -61,6 +64,10 @@
             font-size: 17px;
             cursor: pointer;
             transition: 0.2s;
+            /* 提升按钮点击层级 */
+            position: relative;
+            z-index: 10001;
+            pointer-events: auto;
         }
         .btn-green {
             background: #28a745;
@@ -138,19 +145,19 @@
     <div class="video-page" id="videoContainer">
         <div class="video-card">
             <h3>APTV(快跑)</h3>
-            <video src="APTV(快跑).mp4" controls></video>
+            <video src="./APTV(快跑).mp4" controls></video>
         </div>
         <div class="video-card">
             <h3>APTV(甜蜜之家)</h3>
-            <video src="APTV(甜蜜之家).mp4" controls></video>
+            <video src="./APTV(甜蜜之家).mp4" controls></video>
         </div>
         <div class="video-card">
             <h3>APTV(伪神翁)</h3>
-            <video src="APTV(伪神翁).mp4" controls></video>
+            <video src="./APTV(伪神翁).mp4" controls></video>
         </div>
         <div class="video-card">
             <h3>APTV (巧手厨房)</h3>
-            <video src="APTV (巧手厨房).mp4" controls></video>
+            <video src="./APTV (巧手厨房).mp4" controls></video>
         </div>
     </div>
 
@@ -161,14 +168,8 @@
         const minorBtn = document.getElementById('minorBtn');
         const banText = document.getElementById('banText');
 
-        // 读取本地永久封禁标记
-        let isBanned = localStorage.getItem('siteBan');
-
-        // 已被封禁
-        if(isBanned === 'true'){
-            banText.style.display = 'block';
-            adultBtn.disabled = true;
-            minorBtn.disabled = true;
-            adultBtn.style.opacity = '0.4';
-            minorBtn.style.opacity = '0.4';
-        }
+        // 容错：防止无痕模式localStorage报错卡死页面
+        let isBanned = null;
+        let isConfirmedAdult = null;
+        try {
+          
