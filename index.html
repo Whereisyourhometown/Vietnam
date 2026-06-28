@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APTV越南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: #111;
+            color: #fff;
+            min-height: 100vh;
+        }
+        /* 年龄弹窗遮罩 */
+        .age-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+        .modal-box {
+            max-width: 600px;
+            text-align: center;
+        }
+        .text-item {
+            margin: 16px 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .warn-red {
+            color: #ff3333;
+            font-size: 22px;
+            font-weight: bold;
+            margin: 24px 0;
+        }
+        .btn-group {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            width: 180px;
+            height: 55px;
+            border: none;
+            border-radius: 4px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-green {
+            background: #28a745;
+            color: white;
+        }
+        .btn-green:hover {
+            background: #218838;
+        }
+        .btn-red {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-red:hover {
+            background: #c82333;
+        }
+        /* 封禁提示 */
+        .ban-tip {
+            font-size: 24px;
+            color: #ff4444;
+            display: none;
+        }
+        /* 视频主页容器 */
+        .video-page {
+            display: none;
+            padding: 30px 15px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .video-card {
+            margin-bottom: 40px;
+        }
+        .video-card h3 {
+            margin-bottom: 12px;
+            font-size: 19px;
+        }
+        video {
+            width: 100%;
+            background: #000;
+            border: 2px solid #333;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 年龄验证弹窗 -->
+    <div class="age-modal" id="ageModal">
+        <div class="modal-box">
+            <div class="text-item">
+                你是否满14岁？<br>Are you over 14 years old?
+            </div>
+            <div class="text-item">
+                里面可能会出现突脸、噪音等<br>There may be jump scares, loud noises, etc.
+            </div>
+            <div class="text-item">
+                若有任何不适或心理问题，网站不负责<br>The website is not responsible for any discomfort or psychological problems.
+            </div>
+            <div class="warn-red">
+                请慎重考虑<br>Please think carefully
+            </div>
+            <div class="btn-group">
+                <button class="btn-green" id="adultBtn">
+                    已满14岁<br>Over 14 years old
+                </button>
+                <button class="btn-red" id="minorBtn">
+                    未满14岁<br>Under 14 years old
+                </button>
+            </div>
+            <div class="ban-tip" id="banText" style="margin-top:30px;">
+                永久禁止进入网站<br>Permanently banned from accessing this website
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频主页面 -->
+    <div class="video-page" id="videoContainer">
+        <div class="video-card">
+            <h3>APTV(快跑)</h3>
+            <video src="APTV(快跑).mp4" controls></video>
+        </div>
+        <div class="video-card">
+            <h3>APTV(甜蜜之家)</h3>
+            <video src="APTV(甜蜜之家).mp4" controls></video>
+        </div>
+        <div class="video-card">
+            <h3>APTV(伪神翁)</h3>
+            <video src="APTV(伪神翁).mp4" controls></video>
+        </div>
+        <div class="video-card">
+            <h3>APTV (巧手厨房)</h3>
+            <video src="APTV (巧手厨房).mp4" controls></video>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('ageModal');
+        const videoPage = document.getElementById('videoContainer');
+        const adultBtn = document.getElementById('adultBtn');
+        const minorBtn = document.getElementById('minorBtn');
+        const banText = document.getElementById('banText');
+
+        // 读取本地永久封禁标记
+        let isBanned = localStorage.getItem('siteBan');
+
+        // 已被封禁
+        if(isBanned === 'true'){
+            banText.style.display = 'block';
+            adultBtn.disabled = true;
+            minorBtn.disabled = true;
+            adultBtn.style.opacity = '0.4';
+            minorBtn.style.opacity = '0.4';
+        }
+
+        
